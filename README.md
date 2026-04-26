@@ -1,4 +1,4 @@
-# my-test-app
+# $APP_NAME
 
 An a application with React and TypeScript
 
