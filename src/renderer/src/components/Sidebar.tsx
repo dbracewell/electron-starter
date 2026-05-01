@@ -1,16 +1,18 @@
-import { useStore } from '@/hooks/useStore'
+import { useAppSettings } from '@/hooks/useStore'
+import { cn } from '@/lib/utils'
 import { useCallback, useEffect, useState } from 'react'
 
 export const Sidebar = (): React.JSX.Element => {
-  const [savedWidth, setSavedWidth] = useStore('sidebar:width', 300)
-  const [sideBarVisible] = useStore('sidebar:visible', true)
+  const sidebarWidth = useAppSettings.use.sidebarWidth()
+  const setSidebarWidth = useAppSettings.use.setSidebarWidth()
+  const sideBarVisible = useAppSettings.use.sidebarVisible()
 
   const [isResizing, setIsResizing] = useState(false)
   const [localWidth, setLocalWidth] = useState(300)
 
   useEffect(() => {
-    if (savedWidth) setLocalWidth(savedWidth)
-  }, [savedWidth])
+    if (sidebarWidth) setLocalWidth(sidebarWidth)
+  }, [sidebarWidth])
 
   const startResizing = useCallback(() => {
     setIsResizing(true)
@@ -19,9 +21,9 @@ export const Sidebar = (): React.JSX.Element => {
   const stopResizing = useCallback(() => {
     if (isResizing) {
       setIsResizing(false)
-      setSavedWidth(localWidth) // Persist the final result
+      setSidebarWidth(localWidth) // Persist the final result
     }
-  }, [isResizing, localWidth, setSavedWidth])
+  }, [isResizing, localWidth, setSidebarWidth])
 
   const resize = useCallback(
     (e: MouseEvent) => {
@@ -49,20 +51,19 @@ export const Sidebar = (): React.JSX.Element => {
 
   return (
     <div
-      className={`flex pt-1.5 pb-1.5 pl-1.5 group relative ${
+      className={cn(
+        'flex pt-1.5 pb-1.5 pl-1.5 group relative ',
         isResizing ? 'transition-none select-none' : 'transition-all duration-150'
-      }`}
+      )}
       id="sidebar"
       style={{ width: `${localWidth}px` }}
     >
-      <div className="flex-1 pt-8 border-r border-border flex flex-col p-2 rounded-xl bg-sidebar/10 backdrop-blur-xl border">
+      <div className="flex-1 pt-8 rounded-[1em] flex flex-col p-2 bg-sidebar/30 backdrop-blur-xl border-2">
         {/* Sidebar Content */}
       </div>
 
       <div
-        className={`w-1.5 absolute top-0 right-0 bottom-0 cursor-col-resize hover:bg-primary/30 transition-colors ${
-          isResizing ? 'bg-primary' : 'bg-transparent'
-        }`}
+        className="w-1.5 absolute top-0 right-0 bottom-0 cursor-col-resize"
         onMouseDown={startResizing}
       />
     </div>

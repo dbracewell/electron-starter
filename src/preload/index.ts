@@ -4,10 +4,8 @@ import { contextBridge, ipcRenderer } from 'electron'
 // Custom APIs for renderer
 const api = {
   store: {
-    get: (key: string) => ipcRenderer.invoke('store:get', key),
-    has: (key: string) => ipcRenderer.invoke('store:has', key),
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    set: (key: string, value: any) => ipcRenderer.invoke('store:set', key, value)
+    get: () => ipcRenderer.invoke('store:get'),
+    set: (data: string) => ipcRenderer.invoke('store:set', data)
   },
   darkMode: {
     toggle: () => ipcRenderer.invoke('dark-mode:toggle'),

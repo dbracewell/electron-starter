@@ -3,10 +3,8 @@ declare global {
     electron: ElectronAPI
     api: {
       store: {
-        get: <T>(key: string) => Promise<T>
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        set: (key: string, value: any) => Promise<void>
-        has: (key: string) => Promise<boolean>
+        get: () => Promise<string | null>
+        set: (data: string) => Promise<void>
       }
       darkMode: {
         toggle: () => Promise<void>

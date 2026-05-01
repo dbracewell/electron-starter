@@ -5,13 +5,8 @@ export function ModeToggle() {
   const { theme, setTheme } = useTheme()
 
   const handleToggle = () => {
-    // Determine the next theme
     const nextTheme = theme === 'light' ? 'dark' : 'light'
-
-    // Update React & DOM
     setTheme(nextTheme)
-
-    // Trigger the Electron API you created
     window.api.darkMode.toggle()
   }
 

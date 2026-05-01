@@ -1,36 +1,50 @@
-import { useEffect, useState } from 'react'
+import { create, StoreApi, UseBoundStore } from 'zustand'
+import { createJSONStorage, persist, StateStorage } from 'zustand/middleware'
 
-export function useStore<T>(key: string, initialValue: T) {
-  const [storedValue, setStoredValue] = useState<T>(initialValue)
-  const [isLoading, setIsLoading] = useState(true)
+type WithSelectors<S> = S extends { getState: () => infer T }
+  ? S & { use: { [K in keyof T]: () => T[K] } }
+  : never
 
-  // Load the value from Electron on mount
-  useEffect(() => {
-    const fetchStoredValue = async () => {
-      try {
-        const item = await window.api.store.get(key)
-        if (item !== undefined) {
-          setStoredValue(item as T)
-        }
-      } catch (error) {
-        console.error(`Error loading ${key} from store`, error)
-      } finally {
-        setIsLoading(false)
-      }
-    }
-
-    fetchStoredValue()
-  }, [key])
-
-  // Create a setter function that updates React state AND Electron store
-  const setValue = async (value: T) => {
-    try {
-      setStoredValue(value)
-      await window.api.store.set(key, value)
-    } catch (error) {
-      console.error(`Error saving ${key} to store`, error)
-    }
+const createSelectors = <S extends UseBoundStore<StoreApi<object>>>(_store: S) => {
+  const store = _store as WithSelectors<typeof _store>
+  store.use = {}
+  for (const k of Object.keys(store.getState())) {
+    ;(store.use as any)[k] = () => store((s) => s[k as keyof typeof s])
   }
 
-  return [storedValue, setValue, isLoading] as const
+  return store
 }
+
+const storage: StateStorage = {
+  getItem: async (): Promise<string | null> => {
+    return await window.api.store.get()
+  },
+  setItem: async (_name, value): Promise<void> => {
+    await window.api.store.set(value)
+  },
+  removeItem: async (_: string) => {}
+}
+
+interface AppSettings {
+  sidebarWidth: number
+  sidebarVisible: boolean
+  setSidebarWidth: (width: number) => void
+  setSidebarVisible: (visible: boolean) => void
+}
+
+const useAppSettingsBase = create<AppSettings>()(
+  persist(
+    (set) => ({
+      sidebarWidth: 300,
+      sidebarVisible: true,
+      setSidebarVisible: (visible) => set(() => ({ sidebarVisible: visible })),
+      setSidebarWidth: (width) => set(() => ({ sidebarWidth: width }))
+    }),
+    {
+      name: '<APP_NAME>',
+      storage: createJSONStorage(() => storage)
+    }
+  )
+)
+
+export const useAppSettings = createSelectors(useAppSettingsBase)

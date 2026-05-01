@@ -1,31 +1,35 @@
 import { electronApp, is, optimizer } from '@electron-toolkit/utils'
 import { app, BrowserWindow, ipcMain, nativeTheme, shell } from 'electron'
-import * as fs from 'fs'
-import * as path from 'path' // Update this one too just in case
+import { existsSync, readFileSync, writeFileSync } from 'fs'
+import * as path from 'path'
 import icon from '../../resources/icon.png?asset'
 
 const storePath = path.join(app.getPath('userData'), 'config.json')
 
-function getStoreValue(key: string) {
-  try {
-    const data = JSON.parse(fs.readFileSync(storePath, 'utf-8'))
-    return data[key]
-  } catch (error) {
-    return undefined
-  }
-}
+function initIpcHandlers(): void {
+  ipcMain.handle('store:get', () => {
+    if (existsSync(storePath)) {
+      return readFileSync(storePath, 'utf8')
+    }
+    return JSON.stringify({})
+  })
 
-function setStoreValue(key: string, value: any) {
-  let data: Record<string, any> = {}
-  try {
-    data = JSON.parse(fs.readFileSync(storePath, 'utf-8'))
-  } catch (error) {}
-  data[key] = value
-  fs.writeFileSync(storePath, JSON.stringify(data, null, 2))
-}
+  ipcMain.handle('store:set', (_, data: string) => {
+    writeFileSync(storePath, data)
+  })
 
-function hasStoreValue(key: string) {
-  return getStoreValue(key) !== undefined
+  ipcMain.handle('dark-mode:toggle', () => {
+    if (nativeTheme.shouldUseDarkColors) {
+      nativeTheme.themeSource = 'light'
+    } else {
+      nativeTheme.themeSource = 'dark'
+    }
+    return nativeTheme.shouldUseDarkColors
+  })
+
+  ipcMain.handle('dark-mode:system', () => {
+    nativeTheme.themeSource = 'system'
+  })
 }
 
 function createWindow(): void {
@@ -76,30 +80,7 @@ app.whenReady().then(() => {
     optimizer.watchWindowShortcuts(window)
   })
 
-  ipcMain.handle('dark-mode:toggle', () => {
-    if (nativeTheme.shouldUseDarkColors) {
-      nativeTheme.themeSource = 'light'
-    } else {
-      nativeTheme.themeSource = 'dark'
-    }
-    return nativeTheme.shouldUseDarkColors
-  })
-
-  ipcMain.handle('dark-mode:system', () => {
-    nativeTheme.themeSource = 'system'
-  })
-
-  ipcMain.handle('store:get', (_, key) => {
-    return getStoreValue(key)
-  })
-
-  ipcMain.handle('store:set', (_, key, value) => {
-    setStoreValue(key, value)
-  })
-
-  ipcMain.handle('store:has', (_, key) => {
-    return hasStoreValue(key)
-  })
+  initIpcHandlers()
 
   createWindow()
 

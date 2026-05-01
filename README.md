@@ -1,4 +1,4 @@
-# $APP_NAME
+# <APP_NAME>
 
 An a application with React and TypeScript
 

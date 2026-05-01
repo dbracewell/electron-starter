@@ -47,72 +47,99 @@
 }
 
 :root {
+  /* Clean white background for the main canvas */
   --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
+  /* Deep cool gray for text, rather than pure black, mimicking macOS typography */
+  --foreground: oklch(0.15 0.01 260);
+
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
+  --card-foreground: oklch(0.15 0.01 260);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
+  --popover-foreground: oklch(0.15 0.01 260);
+
+  /* macOS System Blue (Light Mode) */
+  --primary: oklch(0.58 0.2 260);
+  --primary-foreground: oklch(1 0 0);
+
+  /* Very subtle cool grays for secondary panels and muted elements */
+  --secondary: oklch(0.96 0.01 260);
+  --secondary-foreground: oklch(0.15 0.01 260);
+  --muted: oklch(0.96 0.01 260);
+  --muted-foreground: oklch(0.45 0.01 260); /* macOS Secondary Label Color */
+  --accent: oklch(0.96 0.01 260);
+  --accent-foreground: oklch(0.15 0.01 260);
+
+  /* macOS System Red (Light Mode) */
+  --destructive: oklch(0.6 0.22 25);
+
+  /* Translucent black borders for clean, glass-like separation */
+  --border: oklch(0 0 0 / 10%);
+  --input: oklch(0 0 0 / 12%);
+  --ring: oklch(0.58 0.2 260 / 50%); /* Soft blue focus ring */
+
+  /* macOS-inspired chart palette for light mode */
+  --chart-1: oklch(0.58 0.2 260); /* Blue */
+  --chart-2: oklch(0.65 0.15 160); /* Green */
+  --chart-3: oklch(0.65 0.15 45); /* Orange */
+  --chart-4: oklch(0.6 0.2 300); /* Purple */
+  --chart-5: oklch(0.75 0.15 90); /* Yellow */
+
+  /* macOS sidebars in light mode are typically a slightly frosty off-white */
+  --sidebar: oklch(0.97 0.005 260);
+  --sidebar-foreground: oklch(0.15 0.01 260);
+  --sidebar-primary: oklch(0.58 0.2 260);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.93 0.01 260); /* Slightly darker gray on hover */
+  --sidebar-accent-foreground: oklch(0.15 0.01 260);
+  --sidebar-border: oklch(0 0 0 / 10%);
+  --sidebar-ring: oklch(0.58 0.2 260 / 50%);
   --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
+  --background: #222221;
+  --foreground: oklch(1 0 0);
+  --card: oklch(0.27 0.01 260);
   --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
+  --popover: oklch(0.27 0.01 260);
   --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
+
+  /* macOS System Blue */
+  --primary: #007aff;
+  --primary-foreground: oklch(1 0 0);
+
+  /* Elevated states and muted text */
+  --secondary: oklch(0.32 0.01 260);
   --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
+  --muted: oklch(0.27 0.01 260);
+  --muted-foreground: oklch(0.65 0.01 260);
+  --accent: oklch(0.32 0.01 260);
   --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
+
+  /* macOS System Red */
+  --destructive: oklch(0.62 0.22 25);
+
+  /* Translucent borders for a slight "vibrancy" effect */
+  --border: oklch(1 0 0 / 12%);
+  --input: oklch(1 0 0 / 12%);
+  --ring: oklch(0.62 0.2 260 / 50%); /* Soft blue focus ring */
+
+  /* macOS-inspired chart palette (Blue, Green, Orange, Purple, Yellow) */
+  --chart-1: oklch(0.62 0.2 260);
+  --chart-2: oklch(0.7 0.15 160);
+  --chart-3: oklch(0.7 0.15 45);
+  --chart-4: oklch(0.65 0.2 300);
+  --chart-5: oklch(0.8 0.15 90);
+
+  /* Sidebar uses a slightly deeper shade for hierarchy */
+  --sidebar: oklch(0.18 0.01 260);
   --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-primary: oklch(0.62 0.2 260);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.27 0.01 260);
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  --sidebar-ring: oklch(0.62 0.2 260 / 50%);
 }
 
 .no-drag {
@@ -128,7 +155,7 @@
   }
 
   #root {
-    @apply flex  w-full h-full gap-1 pl-0.5 pr-2;
+    @apply flex  w-full h-full pl-0.5 pr-2;
   }
 
   #titlebar {
@@ -149,5 +176,6 @@
       'Open Sans',
       'Helvetica Neue',
       sans-serif;
+    font-size: 16px;
   }
 }
